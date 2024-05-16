@@ -1,0 +1,7 @@
+umap-learn
+numpy
+torchvision
+opencv-python
+tqdm
+roboflow 
+supervision
