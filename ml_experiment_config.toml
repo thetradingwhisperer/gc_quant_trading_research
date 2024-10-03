@@ -1,0 +1,85 @@
+# ML Experiment Configuration for Image Classification with DINOv2
+
+title = "Image Classification with DINOv2"
+version = "1.0.0"
+description = """
+This configuration is for an image classification project using DINOv2 embeddings
+with SVM and Random Forest classifiers, including PCA for dimensionality reduction.
+"""
+
+[paths]
+root_dir = "."  # Current working directory
+test_folder = "test"
+model_save_dir = "models"
+
+[data]
+image_size = [70, 210]
+embedding_size = 384
+
+[model]
+name = "dinov2_vits14"
+device = "cuda"  # Will fall back to "cpu" if CUDA is not available
+
+[preprocessing]
+normalization_mean = [0.5]
+normalization_std = [0.5]
+
+[embeddings]
+output_file = "all_embeddings.json"
+
+[pca]
+n_components = 100
+random_state = 3
+
+[svm]
+gamma = "scale"
+
+[random_forest]
+n_estimators = 50
+max_depth = 60
+random_state = 3
+
+[training]
+save_model = false  # Set to true to save the model
+
+[evaluation]
+test_folders = ["bear", "bull"]
+
+[output]
+predictions_file = "predictions.csv"
+
+[metrics]
+types = ["accuracy", "confusion_matrix"]
+
+[[classifiers]]
+name = "svm"
+use_pca = false
+
+[[classifiers]]
+name = "svm"
+use_pca = true
+
+[[classifiers]]
+name = "random_forest"
+use_pca = false
+
+[[classifiers]]
+name = "random_forest"
+use_pca = true
+
+[[classifiers]]
+name = "best_random_forest"
+use_pca = true
+model_path = "models/rf_pca/best_rf_model_oct1st.pkl"
+pca_path = "models/rf_pca/best_pca_model.pkl"
+
+[[classifiers]]
+name = "best_random_forest"
+use_pca = false
+model_path = "models/rf/best_rf_model_30sept.pkl"
+
+[[classifiers]]
+name = "best_svm"
+use_pca = true
+model_path = "models/svm_pca/best_svm_model_oct1st.pkl"
+pca_path = "models/svm_pca/best_pca_model.pkl"
